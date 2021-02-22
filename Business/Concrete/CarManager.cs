@@ -58,7 +58,7 @@ namespace Business.Concrete
         {
             _carDal.Delete(car);
 
-            return new ErrorResult(Messages.CarDeleted);
+            return new SuccessResult(Messages.CarDeleted);
         }
 
         public IResult Update(Car car)
