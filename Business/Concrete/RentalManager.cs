@@ -1,8 +1,10 @@
 ﻿using System.Linq.Expressions;
+using Core.CrossCuttingConcerns.Validation;
 using Business.Abstract;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using FluentValidation;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
@@ -10,6 +12,8 @@ using System.Text;
 using Business.Constants;
 using Entities.DTOs;
 using System.Timers;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -22,6 +26,7 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
 
+       [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental rental)
         {
             var result = _rentalDal.Get(r => r.Id == rental.Id && r.ReturnDate == null);
@@ -68,7 +73,7 @@ namespace Business.Concrete
         }
 
               
-
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Update(Rental rental)
         {
             _rentalDal.Update(rental);
